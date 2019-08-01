@@ -1,0 +1,19 @@
+
+.Card a {
+    text-decoration: none;
+    color: initial;
+}
+
+.Card a:hover {
+    color: lightskyblue;
+    /* cursor: pointer; */ 
+}
+
+.Card img {
+    max-height: 50px;
+    float: right;
+}
+
+.Card:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<Companies>
+  <div
+    className="loading"
+  >
+    <i
+      className="fas fa-4x fa-spinner fa-spin"
+    />
+  </div>
+</Companies>
+`;

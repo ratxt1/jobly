@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import JoblyApi from './JoblyApi';
 import CompanyCard from './CompanyCard';
+import SearchBar from './SearchBar';
 // import './Companies.css';
 
 
@@ -11,18 +12,33 @@ class Companies extends Component {
             companiesData: [],
             loading: true
         }
-        // TODO: bind function that sets state to filtered companies
+        this.searchCompanies = this.searchCompanies.bind(this)
     }
 
     async componentDidMount() {
-        let companiesData = await JoblyApi.getCompanies()
-        this.setState({
-            companiesData: companiesData,
-            loading: false
-        })
+        try {
+            let companiesData = await JoblyApi.getCompanies()
+            this.setState({
+                companiesData: companiesData,
+                loading: false
+            })
+        } catch(err) {
+            console.log("we got an error", err)
+        }
+        
     }
 
-
+    async searchCompanies(searchTerm) {
+        try {
+            let companiesData = await JoblyApi.getFilteredCompanies(searchTerm)
+            this.setState({
+                companiesData: companiesData
+            })
+        } catch(err) {
+            console.log("we got an error", err)
+        }
+        
+    }
 
     render() {
         if (this.state.loading) {
@@ -33,48 +49,17 @@ class Companies extends Component {
             );
         }
 
-        let companies = this.state.companiesData.map(c => <CompanyCard key={c.handle} {...c}/>);
+        let companies = this.state.companiesData.map(c => <CompanyCard key={c.handle} {...c} />);
 
         return (
-            <div className="Companies">
-                {/* <SearchBar ={this.___}/> */}
-                { companies }
+            <div className="Companies row">
+                <div className="col-8 offset-2">
+                    <SearchBar search={this.searchCompanies} />
+                    {companies}
+                </div>
             </div>
         )
     }
 }
 
 export default Companies;
-
-/** Companies
- * - state {
- *  companies = [];
- * }
- *
- * - method to search for companies
- * method(filteredCompanies){
- * this.setState({
- * companies = filteredCompanies})
- * }
- *
- * render
- * <SearchBar getFilteredCompanies={this.search} />
- * this.state.companies.map(c => <Card >)
- *
- *
- */
-
-/** SearchBar (form)
- * constructor
- * state = input
- * this.handleChange.bind(this)
- * this.handleSubmit.bind(this)
- *
- * handleChange
- * handleSubmit
- * - invokes prop function, which triggers function call in parent and sets state, renders, etc.
- * - reset form
- *
- *
- *
- */

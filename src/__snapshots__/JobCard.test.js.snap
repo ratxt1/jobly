@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  className="card mx-auto mb-1"
+>
+  <div
+    className="card-body"
+  >
+    <h5
+      className="card-title"
+    >
+      test-job
+    </h5>
+    <p
+      className="card-text"
+    >
+      Salary: 
+      100
+    </p>
+    <p
+      className="card-text"
+    >
+      Equity: 
+      0.5
+    </p>
+  </div>
+</div>
+`;
