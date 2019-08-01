@@ -9,19 +9,22 @@ import Homepage from './Homepage'
 
 
 class Routes extends Component {
-    render() {
-        return (
-            <Switch>
-                <Route exact path="/companies" render={() => <Companies />} />
-                <Route exact path="/companies/:name" render={(rtProps) => <Company companyName={rtProps.match.params.name}/>} />
-                <Route exact path="/jobs" render={() => <Jobs />} />
-                <Route exact path="/profile" render={() => <Profile />} />
-                <Route exact path="/login" render={() => <Login />} />
-                <Route exact path="/" render={() => <Homepage />} />
-                <Redirect to="/" />
-            </Switch>
-        )
-    }
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/companies" render={() => <Companies currUser={this.props.currUser}/>} />
+        <Route exact path="/companies/:name" render={(rtProps) => <Company companyName={rtProps.match.params.name} />} />
+        <Route exact path="/jobs" render={() => <Jobs />} />
+        <Route exact path="/profile" render={() => <Profile />} />
+        <Route exact path="/login" render={(rtProps) => <Login
+          {...rtProps}
+          currUser={this.props.currUser}
+          storeUser={this.props.addCurrUser} />} />
+        <Route exact path="/" render={() => <Homepage currUser={this.props.currUser} ß/>} />
+        <Redirect to="/" />
+      </Switch>
+    )
+  }
 }
 
 export default Routes;

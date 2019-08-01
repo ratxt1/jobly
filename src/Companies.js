@@ -1,46 +1,56 @@
 import React, { Component } from 'react';
 import JoblyApi from './JoblyApi';
 import CompanyCard from './CompanyCard';
+import {Redirect} from "react-router-dom"
 import SearchBar from './SearchBar';
 // import './Companies.css';
+
+const ERROR_STATE = {
+    errorMessage: "Something went wrong!",
+    loading: false
+};
 
 
 class Companies extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            companiesData: [],
-            loading: true
+            companies: [],
+            loading: true,
+            errorMessage: ""
         }
         this.searchCompanies = this.searchCompanies.bind(this)
     }
 
     async componentDidMount() {
         try {
-            let companiesData = await JoblyApi.getCompanies()
+            let companies = await JoblyApi.getCompanies()
             this.setState({
-                companiesData: companiesData,
+                companies,
                 loading: false
             })
         } catch(err) {
-            console.log("we got an error", err)
+            this.setState(ERROR_STATE);
         }
         
     }
 
     async searchCompanies(searchTerm) {
         try {
-            let companiesData = await JoblyApi.getFilteredCompanies(searchTerm)
-            this.setState({
-                companiesData: companiesData
-            })
+            let companies = await JoblyApi.getFilteredCompanies(searchTerm)
+            this.setState({ companies })
         } catch(err) {
-            console.log("we got an error", err)
+            this.setState(ERROR_STATE);
         }
         
     }
 
     render() {
+        if(this.props.currUser === null){
+            return <Redirect to="/login"/>
+        }
+        const companies = this.state.companies.map(c => <CompanyCard key={c.handle} {...c} />);
+
         if (this.state.loading) {
             return (
                 <div className="loading">
@@ -49,7 +59,11 @@ class Companies extends Component {
             );
         }
 
-        let companies = this.state.companiesData.map(c => <CompanyCard key={c.handle} {...c} />);
+        if (this.state.errorMessage) {
+            return (
+                <p>{this.state.errorMessage}</p>
+            )
+        }
 
         return (
             <div className="Companies row">

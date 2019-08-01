@@ -26,11 +26,14 @@ class SearchBar extends Component {
             <form onSubmit={this.handleSubmit} className="mt-3 mb-3">
                 <div className="input-group md-form form-sm form-2 pl-0">
                     <label htmlFor="searchTerm"></label>
-                    <input id="searchTerm" name="searchTerm"
+                    <input 
+                        id="searchTerm" 
+                        name="searchTerm"
                         value={this.state.searchTerm}
                         placeholder="Search"
                         onChange={this.handleChange}
-                        className="form-control my-0 py-1" />
+                        className="form-control my-0 py-1" 
+                    />
                     <button className="input-group-text lighten-3"><i className="fa fa-search"></i></button>
                 </div>
             </form>

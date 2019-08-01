@@ -1,20 +1,75 @@
 import React, { Component } from 'react';
 import './App.css';
-import {BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Routes from './Routes'
-import NavBar from './NavBar'
+import { BrowserRouter, withRouter } from 'react-router-dom';
+import Routes from './Routes';
+import NavBar from './NavBar';
+import jwt from 'jsonwebtoken';
+import JoblyApi from './JoblyApi'
 
-class App extends Component{
-  render(){
-    return(
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currUser: null,
+      loading: true
+    };
+    this.clearCurrUser = this.clearCurrUser.bind(this);
+    this.addCurrUser = this.addCurrUser.bind(this);
+  }
+
+  async componentDidMount() {
+    let currUser = this.state.currUser
+    try {
+      let token = window.localStorage.getItem('token');
+      let { username } = jwt.decode(token);
+      currUser = await JoblyApi.getUserInfo(username);
+      this.setState({
+        currUser,
+        loading: false
+      });
+    } catch(err) {
+      this.setState({
+        loading: false
+      });
+      // this.props.history.push('/login');
+    }
+  }
+
+  clearCurrUser() {
+    window.localStorage.removeItem('token');
+    this.setState({ currUser: null });
+  }
+
+  addCurrUser(user) {
+    this.setState({ currUser: user });
+  }
+
+  render() {
+    if (this.state.loading) {
+      return (
+        <div className="loading">
+          <i className="fas fa-4x fa-spinner fa-spin" />
+        </div>
+      );
+    }
+    return (     
       <div className="App">
-        <BrowserRouter>
-          <NavBar/>
-          <Routes/>
-        </BrowserRouter>
-      </div>      
+          <NavBar currUser={this.state.currUser} logoutUser={this.clearCurrUser} />
+          <Routes currUser={this.state.currUser} addCurrUser={this.addCurrUser} />
+      </div>
     )
   }
 }
 
-export default App;
+export default withRouter(App);
+
+/** componentDidMount
+ * localStorage.getItem('token')
+ *
+ * JoblyAPI has
+ *
+ * token payload has username
+ * API call to get /users/username (authenticates, returns users info)
+ *
+ * LATER - returned info should include the jerbs user has applied to
+ */
