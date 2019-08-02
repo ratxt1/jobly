@@ -24,7 +24,7 @@ class App extends Component {
       let token = window.localStorage.getItem('token');
       let { username } = jwt.decode(token);
       currUser = await JoblyApi.getUserInfo(username);
-      // console.log("currUser is: ", currUser);
+      // currUser = {username, first_name, last_name, email, jobs[{id, title, company_handle, state}], photo_url}
       this.setState({
         currUser,
         loading: false

@@ -6,6 +6,8 @@ class JobCard extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  /** NOTE: this.props.apply is a function passed down from either
+   * Company or Job, which makes an API call and sets state */
   handleClick(evt) {
     this.props.apply(evt.target.id);
   }

@@ -62,6 +62,7 @@ class JoblyApi {
     return res.token;
   }
 
+  /** registerUser - given username, password, first_name, last_name, email return token */
   static async registerUser({ username, password, first_name, last_name, email }) {
     let res = await this.request("users", {
       username, password, first_name, last_name, email
@@ -69,6 +70,15 @@ class JoblyApi {
     return res.token;
   }
 
+  /** getUserInfo - given username, return:
+   * currUser = {
+   *  username, 
+   *  first_name, 
+   *  last_name, 
+   *  email, 
+   *  jobs = [{id, title, company_handle, state}...], 
+   *  photo_url} 
+   */
   static async getUserInfo(username) {
     let res = await this.request(`users/${username}`);
     return res.user;
@@ -86,6 +96,7 @@ class JoblyApi {
     return res.user;    
   }
 
+  /** applyToJob - given id and state, return: "applied" */
   static async applyToJob(id, state) {
     let res = await this.request(`jobs/${id}/apply`, { state }, "post");
     return res.message;

@@ -34,11 +34,17 @@ class Jobs extends Component {
 
   }
 
+  /** given search term, make API call to search for jobs & set state
+   * NOTE: passed down to SearchBar as a prop
+   */
   async searchJobs(searchTerm) {
     let jobs = await JoblyApi.getFilteredJobs(searchTerm);
     this.setState({ jobs })
   }
 
+  /** given job id, make API call to apply to job & set state
+   * NOTE: passed down to JobCard as a prop
+   */
   async applyToJob(id){
     let appliedJobStatus = await JoblyApi.applyToJob(id, "applied");
     this.setState(st => ({

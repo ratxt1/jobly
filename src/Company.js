@@ -11,14 +11,16 @@ class Company extends Component {
       companyData: {},
       loading: true
     }
-    this.updateJobStatusForUser = this.updateJobStatusForUser.bind(this)
     this.applyToJob = this.applyToJob.bind(this)
   }
 
+  /** update job application statuses for current user */
   async componentDidMount() {
     try {
       let companyData = await JoblyApi.getCompany(this.props.companyName)
-      let currUserJobIds = this.props.currUser.jobs.map(job => job.id)
+      // get ids for jobs that curr user has applied for
+      let currUserJobIds = this.props.currUser.jobs.map(job => job.id);
+      // update application statuses for those jobs 
       companyData.jobs = companyData.jobs.map(job => {
         return currUserJobIds.includes(job.id)
           ? { ...job, state: "applied" }
@@ -34,26 +36,21 @@ class Company extends Component {
 
   }
 
+  /** given job id, make API call to apply to job & set state
+   * NOTE: passed down to JobCard as a prop
+   */
   async applyToJob(id) {
     let appliedJobStatus = await JoblyApi.applyToJob(id, "applied");
     this.setState(st => ({
-      companyData: {...st.companyData, jobs: st.companyData.jobs.map(function (job) {
+      companyData: {
+        ...st.companyData, 
+        jobs: st.companyData.jobs.map(function (job) {
           return job.id === +id
             ? { ...job, state: appliedJobStatus }
             : job
         })
       }
     }))
-  }
-
-  updateJobStatusForUser(companyData) {
-    let currUserJobIds = this.props.currUser.jobs.map(job => job.id)
-    let updatedCompanyData = companyData.jobs.map(job => {
-      return currUserJobIds.includes(job.id)
-        ? { ...job, state: "applied" }
-        : job
-    })
-    return updatedCompanyData
   }
 
   render() {
