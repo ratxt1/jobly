@@ -37,11 +37,13 @@ class Profile extends Component {
       this.props.updateCurrUser(updatedUser)
       this.setState({
         messageField: "User succesfully updated",
+        password: '',
         errors: false
       });
     } catch(err) {
       this.setState({
         messageField: err[0],
+        password: '',
         errors: true
       })
     }
