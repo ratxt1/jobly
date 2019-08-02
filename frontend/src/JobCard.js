@@ -14,6 +14,8 @@ class JobCard extends Component {
 
   render() {
     let { id, title, salary, equity, state } = this.props;
+    let buttonText = (!state) ? "APPLY" : "APPLIED"
+
     return (
       <div className="card mx-auto mb-1">
         <div className="card-body">
@@ -25,7 +27,7 @@ class JobCard extends Component {
             className="btn btn-danger"
             disabled={state}
             onClick={this.handleClick}>
-            { (!state) ? "APPLY" : "APPLIED"}
+            {buttonText}
           </button>
         </div>
       </div>

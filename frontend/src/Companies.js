@@ -49,7 +49,14 @@ class Companies extends Component {
         if(this.props.currUser === null){
             return <Redirect to="/login"/>
         }
-        const companies = this.state.companies.map(c => <CompanyCard key={c.handle} {...c} />);
+
+        const companies = this.state.companies.map(c => <CompanyCard 
+            key={c.handle} 
+            handle={c.handle}
+            name={c.name}
+            description={c.description}
+            logo_url={c.logo_url} 
+            />);
 
         if (this.state.loading) {
             return (

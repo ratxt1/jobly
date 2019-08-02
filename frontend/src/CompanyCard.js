@@ -8,7 +8,6 @@ class CompanyCard extends Component{
   render(){
       let { handle, name, description, logo_url } = this.props;
       
-      
       if (logo_url === ""){
         logo_url = DEFAULT_IMG;
       }

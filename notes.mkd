@@ -1,0 +1,158 @@
+App
+BrowserRouter
+    NavBar
+    Routes
+        /companies
+        CompanyList
+            Search
+            CompanySummaries
+                CompanySummary
+        /companies/:name  
+        CompanyDetail
+            Header
+            JobSummaries
+                JobSummary
+                    Button/ApplyButton
+        /jobs
+        Jobs
+            Search
+            JobSummaries
+                JobSummary
+                    Button/ApplyButton
+        /profile
+        Profile
+            ProfileForm/EditUserForm
+        /
+        Home
+        /login
+        Login (also has signup)
+            LoginForm
+            SignupForm
+
+
+
+### Logged in status determines UI
+Logged in
+- Navbar: Jobly, Companies, Jobs, Profile, Logout
+- Landing page: Welcome back
+Logged out
+- Navbar: Jobly, Login
+- Landing page: Login button
+- If you try to access other pages --> redirected to log-in page (/login)
+
+---
+
+### Routes
+/companies --> <CompanyList>
+/companies/:name --> <CompanyDetail}>
+/jobs
+/profile
+something to handle 404
+
+---
+
+### Companies tab
+<CompanyList>
+    render
+    <SearchBar>
+    <CompanySummary> (mapped)
+
+Lists all companies in a div
+If you click on a company, you see that companies jobs
+
+# CompanyList
+state/props = {
+    companies = [{companyData}];
+} 
+# SearchBar
+# CompanySummary 
+(this.state/props.companies.map(c => <CompanySummary {...c}/>)
+# CompanyDetail
+
+---
+
+### Jobs tab
+<JobList>
+    render
+    <SearchBar>
+    <JobSummary> (mapped)
+
+Lists all jobs in a div
+
+# JobList
+# JobSummary
+
+### Search bar????
+- form
+- onSubmit --> makes an API call
+
+
+### Question
+- Do we need to handle adding companies? 
+
+
+
+---
+
+### Code Review Feedback
+1. Look into js object destructuring with default values (for handling logo_url in CompanyCard component)
+2. If we're typing the same setState = {blah: blah}, define that as a constant
+3. ```javascript 
+    const allJobs = this.state.jobsData.map(j => <JobCard key={j.id} {...j} />)
+    ```
+   Stylistically - instead of {...j} actually destructure each object ie. title: j.title, salary: j.salary, etc.
+4. In render, move const above conditional logic ie. 
+    ```javascript
+    const companies = this.state.companies.map(c => <CompanyCard key={c.handle} {...c} />);
+
+        if (this.state.loading) {
+            return (
+                <div className="loading">
+                    <i className="fas fa-4x fa-spinner fa-spin" />
+                </div>
+            );
+        }
+    ```
+5. Handling API errors
+    ```javascript
+            try {
+            let companies = await JoblyApi.getCompanies()
+            this.setState({
+                companies,
+                loading: false
+            })
+        } catch(err) {
+            this.setState({
+                errorMessage: "Something went wrong!",
+                loading: false
+            })
+        }
+    ```
+6. Let the components, not the App dictate redirect behavior
+
+---
+
+### Authentication / Remembering Log-in Status
+
+App has
+- state = {currUser: null}
+- clearCurrUser
+    - removes token from local storage
+    - setsState to {currUser: null}
+- addCurrUser(username)
+    - setsState to {currUser: username}
+
+
+render
+<NavBar currUser={this.state.currUser} logoutUser={this.clearCurrUser} />
+<Routes currUser={this.state.currUser} addCurrUser={this.addCurrUser} />(Login Route makes use of state & method)
+
+---
+
+### Refactoring Plan
+1. Consolidate add/clear currUser in App
+2. Make "spinny loading" a separate component
+3. More user friendly error messages for form validation
+4. Abstract apply to jobs to a higher component
+
+
