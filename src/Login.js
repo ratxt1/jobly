@@ -6,8 +6,8 @@ const DEFAULT_STATE = {
   formState: 'login',
   username: '',
   password: '',
-  firstname: '',
-  lastname: '',
+  first_name: '',
+  last_name: '',
   email: '',
   errorMessage: '',
 }
@@ -29,7 +29,6 @@ class Login extends Component {
 
   async handleSubmit(evt) {
     evt.preventDefault();
-
     try {
       let token;
       if (this.state.formState === 'login') {
@@ -37,14 +36,14 @@ class Login extends Component {
       } else {
         token = await JoblyApi.registerUser(this.state);
       }
-      // reset form
-      this.setState(DEFAULT_STATE);
       // save token in local storage 
       window.localStorage.setItem("token", token);
       // set currUser in App
-      this.props.storeUser({ username: this.state.username })
+      this.props.storeUser(this.state.username)
       // imperatively redirect to jobs
       this.props.history.push("/jobs");
+      // reset form
+      this.setState(DEFAULT_STATE);
     } catch (err) {
       this.setState({ errorMessage: err[0] });
     }
@@ -80,7 +79,7 @@ class Login extends Component {
       <div className="Login row mt-5">
         <div className="col-8 offset-2">
           {formTabs}
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} className="card p-3 bg-light">
             <div className="form-group">
               <label htmlFor="username"></label>
               <p className="text-left"><b>Username</b></p>
@@ -90,6 +89,7 @@ class Login extends Component {
                 name="username"
                 placeholder='Username'
                 className="form-control"
+                required
               />
             </div>
             <div className="form-group">
@@ -102,6 +102,7 @@ class Login extends Component {
                 name="password"
                 placeholder='Password'
                 className="form-control"
+                required
               />
             </div>
 
@@ -109,25 +110,27 @@ class Login extends Component {
               ? (
                 <span>
                   <div className="form-group">
-                    <label htmlFor="firstname"></label>
+                    <label htmlFor="first_name"></label>
                     <p className="text-left"><b>First name</b></p>
                     <input
-                      id="firstname"
+                      id="first_name"
                       onChange={this.handleChange}
-                      name="firstname"
+                      name="first_name"
                       placeholder='First Name'
                       className="form-control"
+                      required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="lastname"></label>
+                    <label htmlFor="last_name"></label>
                     <p className="text-left"><b>Last name</b></p>
                     <input
-                      id="lastname"
+                      id="last_name"
                       onChange={this.handleChange}
-                      name="lastname"
+                      name="last_name"
                       placeholder='Last Name'
                       className="form-control"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -139,6 +142,7 @@ class Login extends Component {
                       name="email"
                       placeholder='Email'
                       className="form-control"
+                      required
                     />
                   </div>
                 </span>

@@ -15,6 +15,7 @@ class App extends Component {
     };
     this.clearCurrUser = this.clearCurrUser.bind(this);
     this.addCurrUser = this.addCurrUser.bind(this);
+    this.updateCurrUser = this.updateCurrUser.bind(this);
   }
 
   async componentDidMount() {
@@ -40,8 +41,19 @@ class App extends Component {
     this.setState({ currUser: null });
   }
 
-  addCurrUser(user) {
-    this.setState({ currUser: user });
+  async addCurrUser(username) {
+    console.log("Add curruser username: ", username)
+    try {
+      let currUser = await JoblyApi.getUserInfo(username);
+      this.setState({
+        currUser,
+      });
+    } catch(err) {
+    } 
+  }
+
+  updateCurrUser(updatedUser) {
+    this.setState({currUser: updatedUser})
   }
 
   render() {
@@ -55,7 +67,7 @@ class App extends Component {
     return (     
       <div className="App">
           <NavBar currUser={this.state.currUser} logoutUser={this.clearCurrUser} />
-          <Routes currUser={this.state.currUser} addCurrUser={this.addCurrUser} />
+          <Routes currUser={this.state.currUser} addCurrUser={this.addCurrUser} updateCurrUser={this.updateCurrUser} />
       </div>
     )
   }

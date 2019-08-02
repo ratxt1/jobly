@@ -10,6 +10,7 @@ class JoblyApi {
       paramsOrData._token = window.localStorage.getItem("token");
       // console.log("token in jobly API: ", paramsOrData._token);
     }
+    console.log("IN JOBLYAPI paramsOrData: ", paramsOrData)
 
     console.debug("API Call:", endpoint, paramsOrData, verb);
 
@@ -71,6 +72,17 @@ class JoblyApi {
   static async getUserInfo(username) {
     let res = await this.request(`users/${username}`);
     return res.user;
+  }
+
+  static async updateUserInfo({ username, password, first_name, last_name, email, photo_url }){
+    let requestBody = { password, first_name, last_name, email, photo_url }
+    if (!requestBody.photo_url){
+      delete requestBody.photo_url;
+    }
+    
+    
+    let res = await this.request(`users/${username}`, requestBody , "patch");
+    return res.user;    
   }
 }
 
