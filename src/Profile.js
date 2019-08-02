@@ -7,8 +7,6 @@ import JoblyApi from './JoblyApi';
  * username, first_name, last_name, email, photo_url
  */
 
-
-
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -139,17 +137,3 @@ class Profile extends Component {
 
 export default Profile;
 
-/** Edit form
- * - onSubmit
- *  - if password not correct => error message
- *  - if correct, make API call to patch user
- *
- * if (this.state.messageField) --> show success or error message
- *
- *
- * TODO
- * - JoblyAPI, create method to call PATCH /user/username
- * - updateUserInfo(username, updatedDataObj)
- * where updatedDataObj = this.state : first_name, last_name, email, photo_url
- *
- */

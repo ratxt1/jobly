@@ -76,13 +76,19 @@ class JoblyApi {
 
   static async updateUserInfo({ username, password, first_name, last_name, email, photo_url }){
     let requestBody = { password, first_name, last_name, email, photo_url }
+
+    // remove null photo_urls to prevent JSON scheme validator errors
     if (!requestBody.photo_url){
       delete requestBody.photo_url;
     }
     
-    
     let res = await this.request(`users/${username}`, requestBody , "patch");
     return res.user;    
+  }
+
+  static async applyToJob(id, state) {
+    let res = await this.request(`jobs/${id}/apply`, { state }, "post");
+    return res.message;
   }
 }
 

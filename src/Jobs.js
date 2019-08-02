@@ -18,6 +18,7 @@ class Jobs extends Component {
       errorMessage: ""
     }
     this.searchJobs = this.searchJobs.bind(this);
+    this.applyToJob = this.applyToJob.bind(this);
   }
 
   async componentDidMount() {
@@ -34,18 +35,30 @@ class Jobs extends Component {
   }
 
   async searchJobs(searchTerm) {
-    let jobs = await JoblyApi.getFilteredJobs(searchTerm)
+    let jobs = await JoblyApi.getFilteredJobs(searchTerm);
     this.setState({ jobs })
   }
 
+  async applyToJob(id){
+    let appliedJobStatus = await JoblyApi.applyToJob(id, "applied");
+    this.setState(st => ({
+      jobs: st.jobs.map(function(job){
+        return job.id === +id
+          ? {...job, state: appliedJobStatus}
+          : job
+      })
+    }))
+  }
 
   render() {
-
     const allJobs = this.state.jobs.map(j => <JobCard
       key={j.id}
+      id = {j.id}
       title={j.title}
       salary={j.salary}
       equity={j.equity}
+      state = {j.state}
+      apply = {this.applyToJob}
     />);
 
     if (this.state.loading) {
