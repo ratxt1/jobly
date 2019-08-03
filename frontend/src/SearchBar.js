@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import _, {debounce} from 'lodash';
+console.log(debounce)
 
 class SearchBar extends Component {
   constructor(props) {
@@ -12,6 +13,10 @@ class SearchBar extends Component {
   }
 
   handleChange(evt) {
+    let debouncedSearch = debounce(() => {
+      this.props.search(this.state.searchTerm)
+      }, 500);
+    debouncedSearch()
     this.setState({ [evt.target.name]: evt.target.value });
   }
 
@@ -20,6 +25,9 @@ class SearchBar extends Component {
     this.props.search(this.state.searchTerm);
     this.setState({ searchTerm: "" });
   }
+
+  
+
 
   render() {
     return (

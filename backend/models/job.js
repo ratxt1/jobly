@@ -50,10 +50,10 @@ class Job {
 
   static async findOne(id) {
     const jobRes = await db.query(
-        `SELECT id, title, salary, equity, company_handle 
+      `SELECT id, title, salary, equity, company_handle 
              FROM jobs 
              WHERE id = $1`,
-        [id]);
+      [id]);
 
     const job = jobRes.rows[0];
 
@@ -64,10 +64,10 @@ class Job {
     }
 
     const companiesRes = await db.query(
-        `SELECT name, num_employees, description, logo_url 
+      `SELECT name, num_employees, description, logo_url 
           FROM companies 
           WHERE handle = $1`,
-        [job.company_handle]
+      [job.company_handle]
     );
 
     job.company = companiesRes.rows[0];
@@ -79,10 +79,10 @@ class Job {
 
   static async create(data) {
     const result = await db.query(
-        `INSERT INTO jobs (title, salary, equity, company_handle) 
+      `INSERT INTO jobs (title, salary, equity, company_handle) 
              VALUES ($1, $2, $3, $4) 
              RETURNING id, title, salary, equity, company_handle`,
-        [data.title, data.salary, data.equity, data.company_handle]
+      [data.title, data.salary, data.equity, data.company_handle]
     );
 
     return result.rows[0];
@@ -98,11 +98,11 @@ class Job {
    */
 
   static async update(id, data) {
-    let {query, values} = sqlForPartialUpdate(
-        "jobs",
-        data,
-        "id",
-        id
+    let { query, values } = sqlForPartialUpdate(
+      "jobs",
+      data,
+      "id",
+      id
     );
 
     const result = await db.query(query, values);
@@ -121,10 +121,10 @@ class Job {
 
   static async remove(id) {
     const result = await db.query(
-        `DELETE FROM jobs 
+      `DELETE FROM jobs 
             WHERE id = $1 
             RETURNING id`,
-        [id]);
+      [id]);
 
     if (result.rows.length === 0) {
       let notFound = new Error(`There exists no job '${id}`);
@@ -136,22 +136,39 @@ class Job {
   /** Apply for job: update db, returns undefined. */
 
   static async apply(id, username, state) {
-      const result = await db.query(
-          `SELECT id 
+    const result = await db.query(
+      `SELECT id 
             FROM jobs 
             WHERE id = $1`,
-          [id]);
+      [id]);
 
-      if (result.rows.length === 0) {
-        let notFound = new Error(`There exists no job '${id}`);
-        notFound.status = 404;
-        throw notFound;
-      }
+    if (result.rows.length === 0) {
+      let notFound = new Error(`There exists no job '${id}`);
+      notFound.status = 404;
+      throw notFound;
+    }
 
-      await db.query(
-          `INSERT INTO applications (job_id, username, state) 
+    await db.query(
+      `INSERT INTO applications (job_id, username, state) 
             VALUES ($1, $2, $3)`,
-          [id, username, state]);
+      [id, username, state]);
+  }
+
+
+  /** Unapply to job: update db, returns undefined */
+
+  static async unapply(id, username) {
+    const result = await db.query(
+      `DELETE FROM applications 
+            WHERE job_id=$1
+            AND username=$2
+            RETURNING id`,
+      [id, username]);
+    if (result.rows.length === 0) {
+      let notFound = new Error(`There exists no job application '${id}`);
+      notFound.status = 404;
+      throw notFound;
+    }
   }
 }
 

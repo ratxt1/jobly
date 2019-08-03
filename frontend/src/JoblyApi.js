@@ -12,7 +12,7 @@ class JoblyApi {
       paramsOrData._token = window.localStorage.getItem("token");
       // console.log("token in jobly API: ", paramsOrData._token);
     }
-    console.log("IN JOBLYAPI paramsOrData: ", paramsOrData)
+    //console.log("IN JOBLYAPI paramsOrData: ", paramsOrData)
 
     console.debug("API Call:", endpoint, paramsOrData, verb);
 
@@ -101,6 +101,12 @@ class JoblyApi {
   /** applyToJob - given id and state, return: "applied" */
   static async applyToJob(id, state) {
     let res = await this.request(`jobs/${id}/apply`, { state }, "post");
+    return res.message;
+  }
+
+  /** unapplyToJob - given id return: "Application removed" */
+  static async unapplyToJob(id) {
+    let res = await this.request(`jobs/${id}/unapply`, {}, "delete");    
     return res.message;
   }
 }

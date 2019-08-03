@@ -13,7 +13,7 @@ class CompanyCard extends Component{
       }
 
       return(
-        <div className="Card mx-auto mb-1">
+        <div className="Card shadow-sm bg-white mb-2 rounded mx-auto">
           <Link to={`/companies/${handle}`}>
             <div className="card">
               <div className="card-body">

@@ -114,6 +114,19 @@ router.post("/:id/apply", authRequired, async function(req, res, next) {
   }
 });
 
+/** DELETE /[id]/unapply */
+
+router.delete("/:id/unapply", authRequired, async function(req, res, next) {
+  try {
+    await Job.unapply(req.params.id, req.username);
+    return res.json({ message: "Application removed"});
+  }
+
+  catch (err) {
+    return next(err);
+  }
+});
+
 
 
 module.exports = router;

@@ -19,6 +19,8 @@ class Jobs extends Component {
     }
     this.searchJobs = this.searchJobs.bind(this);
     this.applyToJob = this.applyToJob.bind(this);
+    // COMMENTED OUT - not working
+    //this.toggleJobApplicationStatus = this.toggleJobApplicationStatus.bind(this);
   }
 
   async componentDidMount() {
@@ -56,6 +58,22 @@ class Jobs extends Component {
     }))
   }
 
+  // COMMENTED OUT - JoblyApi.unapplyToJob not working :(
+    
+  // async toggleJobApplicationStatus(id, action){
+  //   let jobStatus = (action === "apply")
+  //     ? await JoblyApi.applyToJob(id, "applied")
+  //     : await JoblyApi.unapplyToJob(id)
+
+  //   this.setState(st => ({
+  //     jobs: st.jobs.map(function(job){
+  //       return job.id === +id
+  //         ? {...job, state: jobStatus}
+  //         : job
+  //     })
+  //   }))
+  // }
+
   render() {
     const allJobs = this.state.jobs.map(j => <JobCard
       key={j.id}
@@ -64,6 +82,8 @@ class Jobs extends Component {
       salary={j.salary}
       equity={j.equity}
       state = {j.state}
+      // COMMENTED OUT - JoblyApi.unapplyToJob not working
+      //handleClick = {this.toggleJobApplicationStatus}
       apply = {this.applyToJob}
     />);
 

@@ -156,3 +156,11 @@ render
 4. Abstract apply to jobs to a higher component
 
 
+---
+
+### My Applications
+1. Route
+2. Nav
+3. UserApplications
+- currUser.jobs.map(job => <JobCard />)
+- apply/unapply click handlers
