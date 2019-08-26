@@ -3,13 +3,21 @@ Jobly is a web app for posting, viewing, and applying to job applications. Built
 
 ## Getting Started
 
+Deployed version can be found at https://jobly-r12.herokuapp.com/
+
+To run locally: 
+
 1. Clone this repo to your local machine 
 ```
-git clone https://github.com/joanne-wu-hoo/rithm-react-jobly
+git clone https://github.com/ratxt1/jobly
 ```
-2. cd into the "backend" directory, install required packages, and start the server
+
+2. cd into the "backend" directory, install required packages, create and seed databases (postgresql needs to be installed on your machine) and start the server
 ```
 cd backend
+npm install
+createdb jobly
+psql jobly < data.sql
 nodemon server.js 
 ```
   This will start the server on port 3001
@@ -24,6 +32,10 @@ npm start
 
 To run tests:
 ```
+createdb jobly-test
+cd backend
+jest
+
 cd frontend
 npm test
 ```
@@ -60,3 +72,5 @@ App
      │ └── JobCard
      └── Profile
 ```
+
+Made by Joanne Wu and Gabriel Mickey
