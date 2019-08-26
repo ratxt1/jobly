@@ -1,0 +1,83 @@
+### COMPANIES
+
+companyData = {
+    handle:
+    name:
+    num_employees:
+    description:
+    logo_url
+}
+
+GET /companies 
+* query: search, min_employees, max_employees
+* returns {companies: [company, company]} 
+
+POST /companies
+* {companyData} =>  {company: newCompany}
+
+GET /companies/[handle]
+* {company: {...companyData, jobs: [job, ...]}}
+
+PATCH /companies/[handle]
+* {companyData} => {company: updatedCompany} 
+
+DELETE /companies/[handle]
+* {message: "Company deleted"}
+
+---
+
+### JOBS
+
+jobData = {
+    id:
+    title:
+    salary:
+    equity:
+    company_handle:
+    date_posted:
+}
+
+GET /jobs 
+* query: search, min_salary, min_equity
+* returns {jobs: [job, ...]}
+
+POST /jobs
+* {jobData} => {job: job}
+
+GET /jobs/[jobid]
+* [jobid] => {job: job}
+
+PATCH /jobs/[jobid]
+* {jobData} => {job: updatedJob}
+
+DELETE /jobs/[handle]
+* {message: "Job deleted"} 
+
+---
+
+### USERS
+
+user = {
+    username:
+    password:
+    first_name:
+    last_name:
+    email:
+    photo_url:
+    is_admin
+}
+
+GET /users 
+* returns {users: [{username, first_name, last_name, email}, ...]}
+
+POST /users
+* {user: user}
+
+GET /users/[username]
+* {user: {username, first_name, last_name, email, photo_url}}
+
+PATCH /users/[jobid]
+* {user} => {user: {username, first_name, last_name, email, photo_url}}
+
+DELETE /users/[username]
+* {message: "User deleted"} 

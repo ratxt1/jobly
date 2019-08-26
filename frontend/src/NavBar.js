@@ -20,6 +20,7 @@ class NavBar extends Component {
         <NavLink exact to="/companies">Companies</NavLink>
         <NavLink exact to="/jobs">Jobs</NavLink>
         <NavLink exact to="/profile">Profile</NavLink>
+        <NavLink exact to="/applications">My Applications</NavLink>
         <Link to="/" onClick={this.logout}>Logout</Link>
       </nav>
       : <nav className="NavBar">

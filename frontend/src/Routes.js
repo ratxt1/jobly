@@ -4,6 +4,7 @@ import Company from './Company'
 import Companies from './Companies'
 import Jobs from './Jobs'
 import Profile from './Profile'
+import UserApplications from './UserApplications'
 import Login from './Login'
 import Homepage from './Homepage'
 
@@ -23,6 +24,8 @@ class Routes extends Component {
         <Route exact path="/profile" render={() => <Profile 
           currUser={this.props.currUser} 
           updateCurrUser={this.props.updateCurrUser} />} />
+
+        <Route exact path="/applications" render={() => <UserApplications currUser={this.props.currUser}/>} />
 
         <Route exact path="/login" render={(rtProps) => <Login
           {...rtProps}

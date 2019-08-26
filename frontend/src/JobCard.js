@@ -11,11 +11,22 @@ class JobCard extends Component {
   handleClick(evt) {
     this.props.apply(evt.target.id);
   }
+  
+  // COMMENTED OUT - not working :(
+  //  handleButtonClick(evt) {
+  //   if (this.props.state === null){
+  //     this.props.handleClick(evt.target.id, "apply");
+  //   } else {
+  //     this.props.handleClick(evt.target.id, "unapply");
+  //   }
+  // }
 
   render() {
     let { id, title, salary, equity, state } = this.props;
+    let buttonText = (!state) ? "APPLY" : "APPLIED"
+
     return (
-      <div className="card mx-auto mb-1">
+      <div className="card shadow-sm bg-white mx-auto mb-2">
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <p className="card-text">Salary: {salary}</p>
@@ -25,7 +36,7 @@ class JobCard extends Component {
             className="btn btn-danger"
             disabled={state}
             onClick={this.handleClick}>
-            { (!state) ? "APPLY" : "APPLIED"}
+            {buttonText}
           </button>
         </div>
       </div>

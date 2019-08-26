@@ -8,13 +8,12 @@ class CompanyCard extends Component{
   render(){
       let { handle, name, description, logo_url } = this.props;
       
-      
       if (logo_url === ""){
         logo_url = DEFAULT_IMG;
       }
 
       return(
-        <div className="Card mx-auto mb-1">
+        <div className="Card shadow-sm bg-white mb-2 rounded mx-auto">
           <Link to={`/companies/${handle}`}>
             <div className="card">
               <div className="card-body">

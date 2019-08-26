@@ -4,20 +4,22 @@ import axios from 'axios'
 
 // this.request('/users/[username]', {username: __, password: ___})
 
+const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+
 class JoblyApi {
   static async request(endpoint, paramsOrData = {}, verb = "get", useToken = true) {
     if (useToken) {
       paramsOrData._token = window.localStorage.getItem("token");
       // console.log("token in jobly API: ", paramsOrData._token);
     }
-    console.log("IN JOBLYAPI paramsOrData: ", paramsOrData)
+    //console.log("IN JOBLYAPI paramsOrData: ", paramsOrData)
 
     console.debug("API Call:", endpoint, paramsOrData, verb);
 
     try {
       return (await axios({
         method: verb,
-        url: `http://localhost:3001/${endpoint}`,
+        url: `${BASE_URL}/${endpoint}`,
         [verb === "get" ? "params" : "data"]: paramsOrData
       })).data;
       // axios sends query string data via the "params" key,
@@ -99,6 +101,12 @@ class JoblyApi {
   /** applyToJob - given id and state, return: "applied" */
   static async applyToJob(id, state) {
     let res = await this.request(`jobs/${id}/apply`, { state }, "post");
+    return res.message;
+  }
+
+  /** unapplyToJob - given id return: "Application removed" */
+  static async unapplyToJob(id) {
+    let res = await this.request(`jobs/${id}/unapply`, {}, "delete");    
     return res.message;
   }
 }
